@@ -10,7 +10,6 @@
         form button { width: 9%; background: rgb(171, 135, 255); border: none; padding: 10px; margin-left: 2%; }
         #messages { list-style-type: none; margin: 0; padding: 0; width: 550px;}
         #messages li { padding: 15px 20px; }
-        #messages li:nth-child(odd) { background: #eee; }
         .speech-bubble {
               margin-top: 10px;
               position: relative;
@@ -31,9 +30,13 @@
               margin-top: 0px;
               margin-right: -6px;
         }
-        .speech-bubble:after:nth-child(odd) {
-          border-left-color: #eee;}
-          
+        .myself-user-bubble {
+          background: green;
+        }
+        .myself-user-bubble:after {
+          border-left-color: green;
+        }
+
     </style>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -45,6 +48,7 @@
     </form>
     <script>
             var socket = io.connect('http://localhost:9393');
+            var myselfUserName;
             // submit text message without reload/refresh the page
             $('form').submit(function(e){
                 e.preventDefault(); // prevents page reloading
@@ -54,15 +58,20 @@
             });
             // append the chat text message
             socket.on('chat_message', function(msg){
-                $('#messages').append($('<li class="speech-bubble">').html(msg));
+              let classes = "speech-bubble";
+              console.log(msg);
+              if (msg.username == myselfUserName) {
+                classes = "myself-user-bubble";
+              }
+              $('#messages').append($("<li class='" + classes + "'>").html(msg.message));
             });
             // append text if someone is online
             socket.on('is_online', function(username) {
                 $('#messages').append($('<li class="speech-bubble">').html(username));
             });
             // ask username
-            var username = prompt('Please tell me your name');
-            socket.emit('username', username);
+            myselfUserName = prompt('Please tell me your name');
+            socket.emit('username', myselfUserName);
     </script>
   </body>
 </html>
