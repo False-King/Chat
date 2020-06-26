@@ -17,6 +17,7 @@
               background: #c2b3f9;
               border-radius: .4em;
               width: 500px;
+              clear: both;
         }
 
         .speech-bubble:after {
@@ -77,13 +78,12 @@
                 return false;
             });
             // append the chat text message
-            socket.on('chat_message', function(msg){
+            socket.on('chat_message', function(messageFromServer){
               let classes = "speech-bubble";
-              console.log(msg);
-              if (msg.username == myselfUserName) {
+              if (messageFromServer.username == myselfUserName) {
                 classes = "myself-user-bubble";
               }
-              $('#messages').append($("<li class='" + classes + "'>").html(msg.message));
+              $('#messages').append($("<li class='" + classes + "'>").html(messageFromServer.message));
             });
             // append text if someone is online
             socket.on('is_online', function(username) {
