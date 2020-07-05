@@ -25,6 +25,7 @@
               border-radius: .4em;
               box-shadow: 1px 1px 10px grey;
               clear: both;
+              word-break: break-word;
         }
 
         .speech-bubble:after {
@@ -78,7 +79,7 @@
       <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="type your message here..." /><button>Send</button>
     </form>
     <script>
-            var socket = io.connect('http://54.157.153.200:9393');
+            var socket = io.connect("http://" + window.location.host + ":9393");
             var myselfUserName;
             // submit text message without reload/refresh the page
             $('form').submit(function(e){
